@@ -1,8 +1,8 @@
-# File: data_injector.py
+# data_injection
 
 # Description: This Package aims to provide some reusable functions for data transfer between different databases.
 
-# Creator: Yuan Yuan (yyuan7@tesla.com)
+# Creator: Yuan Yuan (yyccPhil)
 
 # Version:
 

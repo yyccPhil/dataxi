@@ -31,8 +31,7 @@ class MySQLConnector:
         while cur_attempt < max_attempts and not self.flag_connected:
             try:
                 cur_attempt += 1
-                print(
-                    f"[connect_history]Attempting to connect to MySQL, attempt number: {cur_attempt}.")
+                print(f"[connect_history]Attempting to connect to MySQL, attempt number: {cur_attempt}.")   # noqa: E501
                 if cursorclass == 'dict':
                     self.mysql_connection = pymysql.connect(host=host,
                                                             port=port,
@@ -51,8 +50,7 @@ class MySQLConnector:
                 self.mysql_connection.ping(reconnect=True)
                 self.flag_connected = True  # Mark as successfully connected
             except Exception as e:
-                print(
-                    f"[connect_history]Exception thrown. connect_history for {cur_attempt} attempt: " + str(e))
+                print(f"[connect_history]Exception thrown. connect_history for {cur_attempt} attempt: " + str(e))   # noqa: E501
                 time.sleep(2)  # Wait for 2 seconds before retrying
 
         if not self.flag_connected:
@@ -92,7 +90,8 @@ class MySQLConnector:
 
         Args:
             table_name: target table in MySQL.
-            data: data in tuple list type ([(1, 'Alice'), (2, 'Bob'), (3, 'Charlie')]) to be inserted.
+            data: data in tuple list type to be inserted.
+                  e.g. [(1, 'Alice'), (2, 'Bob'), (3, 'Charlie')]
         """
         with self.mysql_connection.cursor() as cursor:
             query = f"SHOW COLUMNS FROM {table_name};"
@@ -103,7 +102,7 @@ class MySQLConnector:
             # convert the list of column names into a string
             cols = ', '.join(columns)
 
-            insert_query = f"INSERT INTO {table_name} ({cols}) VALUES ({', '.join(['%s' for _ in columns])})"
+            insert_query = f"INSERT INTO {table_name} ({cols}) VALUES ({', '.join(['%s' for _ in columns])})"   # noqa: E501
 
             try:
                 # Insert data into MySQL using executemany
@@ -123,7 +122,8 @@ class MySQLConnector:
 
         Args:
             table_name: target table in MySQL.
-            data: data in dict list type ([{'id': 921, 'name': '7G2CE', 'created': datetime.datetime(2024, 4, 2, 20, 59, 50)]) to be inserted.
+            data: data in dict list type to be inserted.
+                  e.g. [{'id': 921, 'name': '7G2CE', 'created': datetime.datetime(2024, 4, 2, 20, 59, 50)]
         """
         with self.mysql_connection.cursor() as cursor:
             # fetach all column names in the import data
@@ -131,7 +131,7 @@ class MySQLConnector:
             # convert the list of column names into a string
             cols = ', '.join(columns)
 
-            insert_query = f"INSERT INTO {table_name} ({cols}) VALUES ({', '.join(['%s' for _ in columns])})"
+            insert_query = f"INSERT INTO {table_name} ({cols}) VALUES ({', '.join(['%s' for _ in columns])})"   # noqa: E501
 
             tuple_data = [tuple(record.values()) for record in data]
             try:

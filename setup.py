@@ -13,7 +13,7 @@ setup(
         'requests',
         'pandas',
     ],
-    
+
     extras_require={
         'mysql': ['pymysql'],
         'mssql': ['pymssql'],

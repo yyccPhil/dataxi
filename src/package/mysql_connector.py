@@ -123,7 +123,12 @@ class MySQLConnector:
         Args:
             table_name: target table in MySQL.
             data: data in dict list type to be inserted.
-                  e.g. [{'id': 921, 'name': '7G2CE', 'created': datetime.datetime(2024, 4, 2, 20, 59, 50)]
+                  e.g. [
+                        {'id': 921,
+                         'name': '7G2CE',
+                         'created': datetime.datetime(2024, 4, 2, 20, 59, 50)
+                        },
+                       ]
         """
         with self.mysql_connection.cursor() as cursor:
             # fetach all column names in the import data

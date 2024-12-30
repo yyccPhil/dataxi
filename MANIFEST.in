@@ -1,3 +1,2 @@
 exclude .DS_Store
 exclude test.py
-exclude .pypirc

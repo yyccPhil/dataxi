@@ -2,10 +2,11 @@
 
 # Upload project to pypi
 
-rm -rf ./build
 rm -rf ./dist
-rm -rf ./dataxi.egg-info
+rm -rf ./src/dataxi.egg-info
 
-python3 setup.py sdist bdist_wheel
+python setup_helper.py
 
-python3 -m twine upload dist/*
+python -m build
+
+python -m twine upload dist/*

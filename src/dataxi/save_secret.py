@@ -1,4 +1,4 @@
-# File: ./src/save_secret.py
+# File: ./src/dataxi/save_secret.py
 
 # Creator: Yuan Yuan (yyccPhil)
 
@@ -27,14 +27,17 @@ class SaveSecret:
         """Get the secrets storage path."""
         return self.secret_path
 
-    def save_secret(self, conn_id: str, db_type: str, host: str, port: str, user: str, password: str, database: str=None):
+    def save_secret(self, conn_id: str, user: str, password: str, db_type: str=None, host: str=None, port: str=None, database: str=None):
         """Save the secret to the local file.
 
         Args:
             conn_id: the customized connection id of the database.
             db_type: the database source type (mysql, mssql/sql_server, clickhouse/ch).
         """
-        secret_dict = {"db_type": db_type, "host": host, "port": port, "user": user, "password": password, "database": database}
+        if db_type:
+            secret_dict = {"db_type": db_type, "host": host, "port": port, "user": user, "password": password, "database": database}
+        else:
+            secret_dict = {"user": user, "password": password}
         with open(self.secret_path, "r") as f:
             secret_data = json.load(f)
             

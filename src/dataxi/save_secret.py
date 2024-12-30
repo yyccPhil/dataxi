@@ -16,7 +16,7 @@ from pathlib import Path
 class SaveSecret:
     def __init__(self):
         """Initiate secrets storage path. If it does not exist, create the path."""
-        config_dir = Path.home() / ".data_injection"    # placing a "." (period) in front of the folder, will hide it in finder
+        config_dir = Path.home() / ".dataxi"    # placing a "." (period) in front of the folder, will hide it in finder
         config_dir.mkdir(parents=True, exist_ok=True)
 
         self.secret_path = config_dir / "secrets.json"
@@ -84,8 +84,8 @@ class SaveSecret:
                 print(f"conn_id: '{conn_id}' does not exist.")
 
     def clean_secret_folder(self):
-        """Delete the .data_injection folder."""
-        config_dir = Path.home() / ".data_injection" 
+        """Delete the .dataxi folder."""
+        config_dir = Path.home() / ".dataxi" 
         if os.path.exists(config_dir):
             import shutil
             shutil.rmtree(config_dir)

@@ -3,7 +3,7 @@ import re
 # import requests
 # from bs4 import BeautifulSoup
 
-package_name = "data-injection"
+package_name = "dataxi"
 
 
 def curr_version():
@@ -40,7 +40,7 @@ def upload():
         version=curr_version(),
         author="Yuan Yuan",
         author_email="yyccphil@gmail.com",
-        description="Data injection is a cross-DBMS server tool that can help you centralize the data extraction and transfer from different data sources.",
+        description="Dataxi is a cross-DBMS server tool that can help you centralize the data extraction and transfer from different data sources.",
         long_description=long_description,
         long_description_content_type="text/markdown",
         url=f"https://pypi.org/project/{package_name}/",

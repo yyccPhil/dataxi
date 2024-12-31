@@ -29,7 +29,7 @@ from dataxi import SaveSecret
 secret_helper = SaveSecret()
 ```
 
-Use the save_secret() function to store new credentials. The parameters conn_id, user, and password are mandatory. You can also use this to store non-database credentials if you'd like. :v: 
+Use the save_secret() function to store new credentials. The parameters conn_id, user, and password are mandatory. You can also use this to store non-database credentials if you'd like.
 
 ```python
 # For db_type, choose one of the following: mysql, mssql/sql_server, clickhouse/ch
@@ -37,6 +37,12 @@ secret_helper.save_secret(conn_id='mymysql', user='test_user', password='test_pw
 
 # Save non-database credentials
 secret_helper.save_secret(conn_id='test',user='yyccPhil',password='test_pw')
+```
+
+Display all saved conn_ids, similar to how pip list works. This is helpful for quickly identifying available credentials.
+
+```python
+secret_helper.list_conn_id()
 ```
 
 Easily remove credentials you no longer need by specifying their conn_id.
@@ -54,13 +60,13 @@ secret_helper.load_secret(conn_id='test')
 secret_helper.load_secret(all=1)
 ```
 
-**(Warning :exclamation: This action is irreversible!)** Use reset_secret() to clear all stored credentials in the .dataxi folder.
+**(Warning: This action is irreversible!)** Use reset_secret() to clear all stored credentials in the .dataxi folder.
 
 ```python
 secret_helper.reset_secret()
 ```
 
-**(Warning :exclamation: This action is irreversible!)** Use clean_secret_folder() to completely remove the .dataxi folder.
+**(Warning: This action is irreversible!)** Use clean_secret_folder() to completely remove the .dataxi folder.
 
 ```python
 secret_helper.clean_secret_folder()

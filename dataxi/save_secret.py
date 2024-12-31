@@ -6,6 +6,9 @@
 
 # 2024.12.11:
 #     1. Initial version.
+# 2024.12.31:
+#     1. Rewrote initialize functions;
+#     2. Added list_conn_id().
 
 
 import os
@@ -16,16 +19,15 @@ from pathlib import Path
 class SaveSecret:
     def __init__(self):
         """Initiate secrets storage path. If it does not exist, create the path."""
-        config_dir = Path.home() / ".dataxi"    # placing a "." (period) in front of the folder, will hide it in finder
-        config_dir.mkdir(parents=True, exist_ok=True)
-
-        self.secret_path = config_dir / "secrets.json"
+        self.config_dir = Path.home() / ".dataxi"    # placing a "." (period) in front of the folder, will hide it in finder
+        self.secret_path = self.config_dir / "secrets.json"
+        self.initialize_secret_path()
+    
+    def initialize_secret_path(self):
+        """Initialize the secrets storage path."""
+        self.config_dir.mkdir(parents=True, exist_ok=True)
         if not self.secret_path.exists():
             self.secret_path.write_text("{}")
-    
-    def get_secret_path(self):
-        """Get the secrets storage path."""
-        return self.secret_path
 
     def save_secret(self, conn_id: str, user: str, password: str, db_type: str=None, host: str=None, port: str=None, database: str=None):
         """Save the secret to the local file.
@@ -52,6 +54,13 @@ class SaveSecret:
         os.chmod(self.secret_path, 0o600)  # grant the file access
         
         print(f"Added secret: {conn_id}")
+
+    def list_conn_id(self):
+        """List all conn_id."""
+        with open(self.secret_path, "r") as f:
+            secret_data = json.load(f)
+            for key in sorted(secret_data.keys()):
+                print(key)
 
     def delete_secret(self, conn_id: str):
         """Delete the specific secret from the local secret file."""
@@ -80,9 +89,10 @@ class SaveSecret:
         with open(self.secret_path, "r") as f:
             secret_data = json.load(f)
             if all:
-                return secret_data
+                print(secret_data)
+                return None
             if conn_id in secret_data:
-                return secret_data[conn_id]
+                print(secret_data[conn_id])
             else:
                 print(f"conn_id: '{conn_id}' does not exist.")
 
@@ -99,7 +109,7 @@ class SaveSecret:
     def reset_secret(self):
         """Reset the secret file."""
         self.clean_secret_folder()
-        self.get_secret_path()
+        self.initialize_secret_path()
         print("Secrets file reset.")
 
 

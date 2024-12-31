@@ -70,7 +70,7 @@ class SaveSecret:
         
         print(f"Successfully deleted secret: {conn_id}")
 
-    def load_secrets(self, conn_id=None, all=False):
+    def load_secret(self, conn_id=None, all=False):
         """Load the secrets.
         
         Args:

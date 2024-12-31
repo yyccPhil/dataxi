@@ -3,7 +3,7 @@
 # Upload project to pypi
 
 rm -rf ./dist
-rm -rf ./src/dataxi.egg-info
+rm -rf ./dataxi.egg-info
 
 python setup_helper.py
 

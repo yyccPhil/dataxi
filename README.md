@@ -49,6 +49,9 @@ Print the details of a stored credential using its conn_id.
 
 ```python
 secret_helper.load_secret(conn_id='test')
+
+# Print all stored credentials
+secret_helper.load_secret(all=1)
 ```
 
 **(Warning :exclamation: This action is irreversible!)** Use reset_secret() to clear all stored credentials in the .dataxi folder.

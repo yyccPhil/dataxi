@@ -1,3 +1,3 @@
 # __init__.py
-from dataxi.save_secret import SaveSecret, save_secret_env
-from dataxi.connectors import MySQLConnector
+from dataxi.cred_mgr import CredMgr, save_cred_env
+# from dataxi.connectors import MySQLConnector

@@ -1,17 +1,17 @@
 # Dataxi
 
-Dataxi is a cross-DBMS server tool that can help you centralize the data extraction and transfer from different data sources.
+Dataxi is a cross-DBMS server tool based on Polars with credential management that can help you centralize the data extraction and transfer from different data sources.
 
 ## Highlights
 
 * Supports multiple data sources: MySQL, SQL Server, ClickHouse, Splunk
-* Supports data parsing from multiple formats: CSV, XLSX, and Parquet
+* Supports data parsing from multiple formats: pandas, CSV, XLSX, and Parquet
 * Offers credential management with easy access using `conn_id`
 * Works on Linux/MacOS/Windows
 
 ## Install
 
-The preferred way to install VizTracer is via pip
+The preferred way to install Dataxi is via pip
 
 ```sh
 pip install dataxi

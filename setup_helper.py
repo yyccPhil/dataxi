@@ -22,12 +22,12 @@ def get_version():
     patch = int(match.group(3))
 
     patch += 1
-    if patch > 9:
-        patch = 0
-        minor += 1
-        if minor > 9:
-            minor = 0
-            major += 1
+    # if patch > 9:
+    #     patch = 0
+    #     minor += 1
+    #     if minor > 9:
+    #         minor = 0
+    #         major += 1
     new_version_str = f"{major}.{minor}.{patch}"
     return new_version_str
 
@@ -36,12 +36,6 @@ def update_version_file():
     with open("VERSION", "w") as f:
         f.write(new_version)
     print(f"Updated version to {new_version}")
-
-
-def load_requirements(filename="requirements.txt"):
-    """Read dependencies from a requirements.txt file."""
-    with open(filename) as f:
-        return f.read().splitlines()
 
 
 if __name__ == '__main__':

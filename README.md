@@ -1,6 +1,7 @@
 # Dataxi
 
 Dataxi is a cross-DBMS server tool based on Polars with credential management that can help you centralize the data extraction and transfer from different data sources.
+For detailed documentation, please refer to [Dataxi Wiki Page](https://github.com/yyccPhil/dataxi/wiki).
 
 ## Highlights
 

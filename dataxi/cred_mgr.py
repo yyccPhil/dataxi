@@ -12,6 +12,8 @@
 # 2025.01.07:
 #     1. added token type to credentials;
 #     2. renamed the file, class and func name to 'cred'.
+# 2025.02.05:
+#     1. renamed the function from 'save_cred' to 'add_cred'.
 
 
 import os
@@ -32,7 +34,7 @@ class CredMgr:
         if not self.cred_path.exists():
             self.cred_path.write_text("{}")
 
-    def save_cred(self, conn_id: str, user: str=None, password: str=None, db_type: str=None, host: str=None, port: str=None, database: str=None, token: str=None):
+    def add_cred(self, conn_id: str, user: str=None, password: str=None, db_type: str=None, host: str=None, port: str=None, database: str=None, token: str=None):
         """Save the credential to the local file.
 
         Args:

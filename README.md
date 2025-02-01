@@ -23,55 +23,78 @@ pip install dataxi
 
 ### Credential Management
 
-Initialize the SaveSecret helper to manage your credentials. This will create a hidden .dataxi folder in your $HOME directory to securely store credentials.
+#### Command Line
 
-```python
-from dataxi import SaveSecret
+Initialize to manage your credentials. This will create a hidden .dataxi folder in your $HOME directory to securely store credentials.
 
-secret_helper = SaveSecret()
+```sh
+cred_mgr
 ```
 
-Use the save_secret() function to store new credentials. The parameters conn_id, user, and password are mandatory. You can also use this to store non-database credentials if you'd like.
+<details>
 
-```python
-# For db_type, choose one of the following: mysql, mssql/sql_server, clickhouse/ch
-secret_helper.save_secret(conn_id='mymysql', user='test_user', password='test_pw', db_type='mysql', host='test.net', port='3306', database='test_db')
+<summary>
+Use the <code>add</code> command to store new credential interactively. It requires a unique <code>conn_id</code>, and supports 3 credential types: Database, Secret and Token.
+</summary>
 
-# Save non-database credentials
-secret_helper.save_secret(conn_id='test',user='yyccPhil',password='test_pw')
+You will be prompted to choose among the 3 credential types.
+##### Database
+Provide:
+- **db_type**: one of `mysql`, `mssql` (or `sql_server`), `clickhouse` (or `ch`)
+- **username**
+- **password**
+- **host**
+- **port**
+- **database** (optional)
+
+##### Secret
+Provide:
+- **username**
+- **password**
+
+##### Token
+Provide:
+- **token**
+
+> Note: For token credentials, `db_type` is automatically set to `token` and does not need to be provided.
+
+</details>
+
+```sh
+cred_mgr add <conn_id>
 ```
 
 Display all saved conn_ids, similar to how pip list works. This is helpful for quickly identifying available credentials.
 
-```python
-secret_helper.list_conn_id()
+```sh
+cred_mgr list
 ```
 
 Easily remove credentials you no longer need by specifying their conn_id.
 
-```python
-secret_helper.delete_secret(conn_id='mymysql')
+```sh
+cred_mgr delete <conn_id>
 ```
 
 Print the details of a stored credential using its conn_id.
 
-```python
-secret_helper.load_secret(conn_id='test')
+```sh
+cred_mgr load -id <conn_id>
 
 # Print all stored credentials
-secret_helper.load_secret(all=1)
+cred_mgr load -a
 ```
 
-**(Warning: This action is irreversible!)** Use reset_secret() to clear all stored credentials in the .dataxi folder.
+**(Warning: This action is irreversible!)** Use <code>reset</code> to clear all stored credentials in the .dataxi folder.
 
-```python
-secret_helper.reset_secret()
+```sh
+cred_mgr reset
 ```
 
-**(Warning: This action is irreversible!)** Use clean_secret_folder() to completely remove the .dataxi folder.
+**(Warning: This action is irreversible!)** Use <code>clean</code> to completely remove the .dataxi folder.
 
-```python
-secret_helper.clean_secret_folder()
+```sh
+cred_mgr clean
 ```
 
 ## License

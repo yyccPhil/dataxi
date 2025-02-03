@@ -37,11 +37,10 @@ cred_mgr
 Use the <code>add</code> command to store new credential interactively. It requires a unique <code>conn_id</code>, and supports 3 credential types: Database, Secret and Token.
 </summary>
 
-You will be prompted to choose among the 3 credential types.
+You will be prompted to choose among the 3 credential types. For each type, provide the following arguments in order:
 
 **Database**
 
-Provide:
 - **db_type**: one of `mysql`, `mssql` (or `sql_server`), `clickhouse` (or `ch`)
 - **username**
 - **password**
@@ -51,13 +50,11 @@ Provide:
 
 **Secret**
 
-Provide:
 - **username**
 - **password**
 
 **Token**
 
-Provide:
 - **token**
 
 > Note: For token credentials, `db_type` is automatically set to `token` and does not need to be provided.

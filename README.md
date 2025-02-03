@@ -38,7 +38,9 @@ Use the <code>add</code> command to store new credential interactively. It requi
 </summary>
 
 You will be prompted to choose among the 3 credential types.
+
 **Database**
+
 Provide:
 - **db_type**: one of `mysql`, `mssql` (or `sql_server`), `clickhouse` (or `ch`)
 - **username**
@@ -48,11 +50,13 @@ Provide:
 - **database** (optional)
 
 **Secret**
+
 Provide:
 - **username**
 - **password**
 
 **Token**
+
 Provide:
 - **token**
 

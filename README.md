@@ -6,7 +6,7 @@ For detailed documentation, please refer to [Dataxi Wiki Page](https://github.co
 
 ## Highlights
 
-* Supports multiple data sources: MySQL, SQL Server, ClickHouse, Splunk
+* Supports multiple data sources: ClickHouse, MySQL, PostgreSQL, SQL Server, Splunk
 * Supports data parsing from multiple formats: pandas, CSV, XLSX, and Parquet
 * Offers credential management with easy access using `conn_id`
 * Works on Linux/MacOS/Windows
@@ -41,7 +41,7 @@ You will be prompted to choose among the 3 credential types. For each type, prov
 
 **Database**
 
-- **db_type**: one of `mysql`, `mssql` (or `sql_server`), `clickhouse` (or `ch`)
+- **db_type**: one of `mysql`, `mssql` (or `sql_server`), `clickhouse` (or `ch`), `postgresql` (or `postgres`)
 - **username**
 - **password**
 - **host**

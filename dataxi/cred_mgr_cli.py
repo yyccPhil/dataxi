@@ -77,7 +77,7 @@ def main():
         elif cred_type == "2":
             # Secret credentials
             user = input("Enter username: ").strip()
-            password = getpass.getpass("Enter password: ").strip()
+            password = getpass.getpass("Enter password (hidden): ").strip()
             cred_mgr.add_cred(
                 conn_id=conn_id,
                 user=user,

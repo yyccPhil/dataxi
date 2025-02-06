@@ -96,7 +96,8 @@ class CredMgr:
         with open(self.cred_path, "r") as f:
             cred_data = json.load(f)
             if all:
-                print(cred_data)
+                for cred in cred_data:
+                    print(cred)
                 return None
             if conn_id in cred_data:
                 print(cred_data[conn_id])

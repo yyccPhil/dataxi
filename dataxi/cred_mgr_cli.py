@@ -46,10 +46,10 @@ def main():
         if cred_type == "1":
             # Database credentials
             
-            valid_db_types = ['mysql', 'mssql', 'sql_server', 'clickhouse', 'ch']
-            db_type = input("Enter database type (valid: 'mysql', 'mssql'/'sql_server', 'clickhouse'/'ch'): ").strip().lower()
+            valid_db_types = ['mysql', 'mssql', 'sql_server', 'clickhouse', 'ch', 'postgresql', 'postgres']
+            db_type = input("Enter database type (valid: 'mysql', 'mssql'/'sql_server', 'clickhouse'/'ch', 'postgresql'/'postgres'): ").strip().lower()
             while db_type not in valid_db_types:
-                print("Invalid database type. Please enter one of: 'mysql', 'mssql'/'sql_server', 'clickhouse'/'ch'.")
+                print("Invalid database type. Please enter one of: 'mysql', 'mssql'/'sql_server', 'clickhouse'/'ch', 'postgresql'/'postgres'.")
                 db_type = input("Enter valid database type: ").strip().lower()
                 
             user = input("Enter username: ").strip()

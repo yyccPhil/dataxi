@@ -39,7 +39,7 @@ class CredMgr:
 
         Args:
             conn_id: the customized connection id of the database.
-            db_type: the database source type ('mysql', 'mssql'/'sql_server', 'clickhouse'/'ch').
+            db_type: the database source type ('mysql', 'mssql'/'sql_server', 'clickhouse'/'ch', 'postgresql'/'postgres').
         """
         if db_type=='token':
             cred_dict = {"token": token}
@@ -111,8 +111,8 @@ class CredMgr:
             import shutil
             shutil.rmtree(config_dir)
             print(f"Folder deleted: {config_dir}")
-        else:
-            print("Folder does not exist.")
+        # else:
+        #     print("Folder does not exist.")
 
     def reset_cred(self):
         """Reset the credential storage file."""

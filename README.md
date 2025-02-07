@@ -68,13 +68,15 @@ cred_mgr add <conn_id>
 Display all saved conn_ids, similar to how pip list works. This is helpful for quickly identifying available credentials.
 
 ```sh
-cred_mgr list
+cred_mgr ls
+# cred_mgr list
 ```
 
 Easily remove credentials you no longer need by specifying their conn_id.
 
 ```sh
-cred_mgr delete <conn_id>
+cred_mgr D <conn_id>
+# cred_mgr delete <conn_id>
 ```
 
 Print the details of a stored credential using its conn_id.
@@ -84,6 +86,7 @@ cred_mgr load -id <conn_id>
 
 # Print all stored credentials
 cred_mgr load -a
+# cred_mgr load --all
 ```
 
 **(Warning: This action is irreversible!)** Use <code>reset</code> to clear all stored credentials in the .dataxi folder.

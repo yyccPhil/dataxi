@@ -12,10 +12,10 @@ def main():
     subparsers.add_parser("add", help="Add new credential interactively")
 
     # Subcommand to list all connection IDs
-    subparsers.add_parser("list", help="List all connection IDs")
+    subparsers.add_parser("list", aliases=["ls"], help="List all connection IDs")
 
     # Subcommand to delete a credential
-    parser_delete = subparsers.add_parser("delete", help="Delete a specific credential")
+    parser_delete = subparsers.add_parser("delete", aliases=["D"], help="Delete a specific credential")
     parser_delete.add_argument("conn_id", help="Connection ID to delete")
 
     # Subcommand to load credential(s)
@@ -93,9 +93,9 @@ def main():
             )
         else:
             print("Invalid option. Exiting.")
-    elif args.command == "list":
+    elif args.command in ("list", "ls"):
         cred_mgr.list_conn_id()
-    elif args.command == "delete":
+    elif args.command in ("delete", "D"):
         cred_mgr.delete_cred(conn_id=args.conn_id)
     elif args.command == "load":
         cred_mgr.load_cred(conn_id=args.conn_id, all=args.all)

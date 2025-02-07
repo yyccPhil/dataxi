@@ -14,11 +14,66 @@
 #     2. renamed the file, class and func name to 'cred'.
 # 2025.02.05:
 #     1. renamed the function from 'save_cred' to 'add_cred'.
+# 2025.02.07:
+#     1. added dict_to_table() and used it in load_cred() when loading all credentials.
 
 
 import os
 import json
 from pathlib import Path
+
+
+def dict_to_table(data: dict) -> str:
+    """
+    Converts a dictionary to a table formatted with Unicode borders.
+    
+    Args:
+        data: the input dictionary should have keys (as connection IDs) and values (as credential dictionaries).
+    Example input:
+      {
+          "3": {"token": "12312"},
+          "123": {"db_type": "ch", "host": "g", "port": 123}
+      }
+      
+    The output is a string representing a table with two columns:
+      - 'conn_id'
+      - 'credential'
+      
+    Each credential is converted into a JSON string.
+    """
+    # Define table header and collect all rows (each row is a list of cell strings)
+    header = ["conn_id", "credential (passwords can only be seen when loading the specific conn_id)"]
+    rows = []
+    for conn_id, cred in data.items():
+        hidden_cred = cred.copy()
+        if "password" in hidden_cred and hidden_cred["password"]:
+            hidden_cred["password"] = "*" * len(hidden_cred["password"])
+        cred_str = json.dumps(hidden_cred, ensure_ascii=False)
+        rows.append([str(conn_id), cred_str])
+    
+    # Compute the maximum width for each column (including header and all cell contents)
+    col_widths = [len(header[i]) for i in range(len(header))]
+    for row in rows:
+        for i, cell in enumerate(row):
+            col_widths[i] = max(col_widths[i], len(cell))
+    
+    # Build the top border using Unicode characters
+    top_border = "┌" + "┬".join("─" * (w + 2) for w in col_widths) + "┐"
+    # Build the header row (centered text)
+    header_row = "│" + "│".join(" " + header[i].center(col_widths[i]) + " " for i in range(len(header))) + "│"
+    # Build the separator row
+    separator = "├" + "┼".join("─" * (w + 2) for w in col_widths) + "┤"
+    # Build each data row (left-aligned)
+    data_rows = []
+    for row in rows:
+        data_row = "│" + "│".join(" " + row[i].ljust(col_widths[i]) + " " for i in range(len(row))) + "│"
+        data_rows.append(data_row)
+    # Build the bottom border
+    bottom_border = "└" + "┴".join("─" * (w + 2) for w in col_widths) + "┘"
+    
+    # Concatenate all parts into the final table string
+    table = "\n".join([top_border, header_row, separator] + data_rows + [bottom_border])
+    return table
 
 
 class CredMgr:
@@ -96,8 +151,7 @@ class CredMgr:
         with open(self.cred_path, "r") as f:
             cred_data = json.load(f)
             if all:
-                for cred in cred_data:
-                    print(cred)
+                print(dict_to_table(cred_data))
                 return None
             if conn_id in cred_data:
                 print(cred_data[conn_id])

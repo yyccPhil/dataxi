@@ -1,23 +1,3 @@
-# File: /dataxi/cred_mgr.py
-
-# Creator: Yuan Yuan (yyccPhil)
-
-# Version:
-
-# 2024.12.11:
-#     1. Initial version.
-# 2024.12.31:
-#     1. Rewrote initialize functions;
-#     2. Added list_conn_id().
-# 2025.01.07:
-#     1. added token type to credentials;
-#     2. renamed the file, class and func name to 'cred'.
-# 2025.02.05:
-#     1. renamed the function from 'save_cred' to 'add_cred'.
-# 2025.02.07:
-#     1. added dict_to_table() and used it in load_cred() when loading all credentials.
-
-
 import os
 import json
 from pathlib import Path

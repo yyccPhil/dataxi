@@ -22,7 +22,7 @@ requires-python = ">=3.6"
 include = ["dataxi*"]
 
 [project.scripts]
-cred_mgr = "dataxi.cred_mgr_cli:main"
+cred_mgr = "dataxi.cred_mgr.cred_mgr_cli:main"
 
 [project.urls]
 "Project" = "https://github.com/yyccPhil/dataxi"

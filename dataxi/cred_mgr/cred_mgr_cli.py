@@ -23,6 +23,14 @@ def main():
     group = parser_load.add_mutually_exclusive_group(required=True)
     group.add_argument("-id", "--conn_id", help="Connection ID to load")
     group.add_argument("-a", "--all", action="store_true", help="Load all credentials")
+    
+    # Subcommand to send the credential securely
+    parser_send = subparsers.add_parser("send", help="Send a credential securely")
+    group = parser_send.add_mutually_exclusive_group(required=True)
+    group.add_argument("-id", "--conn_id", help="Connection ID to send")
+    group.add_argument("-s", "--secret", help="Specify the secret to send")
+    parser_send.add_argument("--ttl", help="Specify the time-to-live in seconds, default is 3600 seconds")
+    parser_send.add_argument("-cfg", "--config", choices=['us', 'eu', 'default'], help="Specify the configuration to use")
 
     # Subcommand to clean the credential folder
     subparsers.add_parser("clean", help="Delete the credential folder")

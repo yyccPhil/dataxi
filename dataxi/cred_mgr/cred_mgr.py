@@ -1,6 +1,8 @@
 import os
 import json
 from pathlib import Path
+import time
+import getpass
 
 
 def dict_to_table(data: dict) -> str:
@@ -69,24 +71,61 @@ class CredMgr:
         if not self.cred_path.exists():
             self.cred_path.write_text("{}")
 
-    def add_cred(self, conn_id: str, user: str=None, password: str=None, db_type: str=None, host: str=None, port: str=None, database: str=None, token: str=None):
+    def add_cred(self, conn_id: str):
         """Save the credential to the local file.
 
         Args:
             conn_id: the customized connection id of the database.
-            db_type: the database source type ('mysql', 'mssql'/'sql_server', 'clickhouse'/'ch', 'postgresql'/'postgres').
         """
-        if db_type=='token':
-            cred_dict = {"token": token}
-        elif db_type:
-            cred_dict = {"db_type": db_type, "host": host, "port": port, "user": user, "password": password, "database": database}
-        else:
-            cred_dict = {"user": user, "password": password}
+        
+        # Check if the conn_id already exists
         with open(self.cred_path, "r") as f:
             cred_data = json.load(f)
-            
         if conn_id in cred_data:
-            print(f"conn_id: '{conn_id}' already exists. If want to overwrite it, please use delete_cred() to remove it first.")
+            print(f"conn_id: '{conn_id}' already exists. If want to overwrite it, please use 'delete' command to remove it first.")
+            return None
+        
+        # Interactive mode for adding credentials
+        print("Select credential type:")
+        print("1. Database")
+        print("2. Secret")
+        print("3. Token")
+        cred_type = input("Enter option (1/2/3): ").strip()
+        
+        if cred_type == "1":
+            # Database credentials
+            valid_db_types = ['mysql', 'mssql', 'sql_server', 'clickhouse', 'ch', 'postgresql', 'postgres']
+            db_type = input("Enter database type (valid: 'mysql', 'mssql'/'sql_server', 'clickhouse'/'ch', 'postgresql'/'postgres'): ").strip().lower()
+            while db_type not in valid_db_types:
+                print("Invalid database type. Please enter one of: 'mysql', 'mssql'/'sql_server', 'clickhouse'/'ch', 'postgresql'/'postgres'.")
+                db_type = input("Enter valid database type: ").strip().lower()
+                
+            user = input("Enter username: ").strip()
+            password = getpass.getpass("Enter password (hidden): ").strip()
+            host = input("Enter host address: ").strip()
+            
+            port = input("Enter port number: ").strip()
+            while not port.isdigit():
+                print("Invalid port. Please enter integer.")
+                port = input("Enter valid port number: ").strip()
+                
+            database = input("Enter database name (optional, press Enter to skip): ").strip()
+            if database == "":
+                cred_dict = {"db_type": db_type, "host": host, "port": int(port), "user": user, "password": password}
+            else:
+                cred_dict = {"db_type": db_type, "host": host, "port": int(port), "user": user, "password": password, "database": database}
+        
+        elif cred_type == "2":
+            # Secret credentials
+            user = input("Enter username: ").strip()
+            password = getpass.getpass("Enter password (hidden): ").strip()
+            cred_dict = {"user": user, "password": password}
+        elif cred_type == "3":
+            # Token credentials
+            token = input("Enter token: ").strip()
+            cred_dict = {"token": token}
+        else:
+            print("Invalid option. Exiting...")
             return None
         
         cred_data[conn_id] = cred_dict
@@ -103,6 +142,7 @@ class CredMgr:
             cred_data = json.load(f)
             for key in sorted(cred_data.keys()):
                 print(key)
+        print(f"[{time.strftime("%H:%M:%S")}] {len(cred_data.keys())} records retrieved")
 
     def delete_cred(self, conn_id: str):
         """Delete the specific credential using conn_id from the local credential file."""
@@ -132,6 +172,7 @@ class CredMgr:
             cred_data = json.load(f)
             if all:
                 print(dict_to_table(cred_data))
+                print(f"[{time.strftime("%H:%M:%S")}] {len(cred_data.keys())} records retrieved")
                 return None
             if conn_id in cred_data:
                 print(cred_data[conn_id])

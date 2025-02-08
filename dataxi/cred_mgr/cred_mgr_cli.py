@@ -1,6 +1,5 @@
 import argparse
 from .cred_mgr import CredMgr
-import getpass
 
 
 def main():
@@ -9,7 +8,8 @@ def main():
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # Subcommand to add credentials
-    subparsers.add_parser("add", help="Add new credential interactively")
+    parser_add = subparsers.add_parser("add", help="Add new credential interactively")
+    parser_add.add_argument("conn_id", help="Connection ID to add")
 
     # Subcommand to list all connection IDs
     subparsers.add_parser("list", aliases=["ls"], help="List all connection IDs")
@@ -43,64 +43,7 @@ def main():
 
     # Call the corresponding method based on the subcommand
     if args.command == "add":
-        # Interactive mode for adding credentials
-        conn_id = input("Enter connection ID (conn_id): ").strip()
-        print("\nSelect credential type:")
-        print("1. Database")
-        print("2. Secret")
-        print("3. Token")
-        cred_type = input("Enter option (1/2/3): ").strip()
-
-        if cred_type == "1":
-            # Database credentials
-            
-            valid_db_types = ['mysql', 'mssql', 'sql_server', 'clickhouse', 'ch', 'postgresql', 'postgres']
-            db_type = input("Enter database type (valid: 'mysql', 'mssql'/'sql_server', 'clickhouse'/'ch', 'postgresql'/'postgres'): ").strip().lower()
-            while db_type not in valid_db_types:
-                print("Invalid database type. Please enter one of: 'mysql', 'mssql'/'sql_server', 'clickhouse'/'ch', 'postgresql'/'postgres'.")
-                db_type = input("Enter valid database type: ").strip().lower()
-                
-            user = input("Enter username: ").strip()
-            password = getpass.getpass("Enter password (hidden): ").strip()
-            host = input("Enter host address: ").strip()
-            
-            port = input("Enter port number: ").strip()
-            while not port.isdigit():
-                print("Invalid port. Please enter integer.")
-                port = input("Enter valid port number: ").strip()
-                
-            database = input("Enter database name (optional, press Enter to skip): ").strip()
-            if database == "":
-                database = None
-                
-            cred_mgr.add_cred(
-                conn_id=conn_id,
-                user=user,
-                password=password,
-                db_type=db_type,
-                host=host,
-                port=int(port),
-                database=database
-            )
-        elif cred_type == "2":
-            # Secret credentials
-            user = input("Enter username: ").strip()
-            password = getpass.getpass("Enter password (hidden): ").strip()
-            cred_mgr.add_cred(
-                conn_id=conn_id,
-                user=user,
-                password=password
-            )
-        elif cred_type == "3":
-            # Token credentials
-            token = input("Enter token: ").strip()
-            cred_mgr.add_cred(
-                conn_id=conn_id,
-                db_type="token",
-                token=token
-            )
-        else:
-            print("Invalid option. Exiting.")
+        cred_mgr.add_cred(conn_id=args.conn_id)
     elif args.command in ("list", "ls"):
         cred_mgr.list_conn_id()
     elif args.command in ("delete", "D"):

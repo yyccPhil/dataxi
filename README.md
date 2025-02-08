@@ -57,8 +57,6 @@ You will be prompted to choose among the 3 credential types. For each type, prov
 
 - **token**
 
-> Note: For token credentials, `db_type` is automatically set to `token` and does not need to be provided.
-
 </details>
 
 ```sh

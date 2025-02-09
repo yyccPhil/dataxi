@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import time
 import getpass
+import random
+import string
 
 
 def dict_to_table(data: dict) -> str:
@@ -142,6 +144,8 @@ class CredMgr:
             cred_data = json.load(f)
             for key in sorted(cred_data.keys()):
                 print(key)
+        
+        # Print the system time and the number of records retrieved
         print(f"[{time.strftime("%H:%M:%S")}] {len(cred_data.keys())} records retrieved")
 
     def delete_cred(self, conn_id: str):
@@ -172,12 +176,70 @@ class CredMgr:
             cred_data = json.load(f)
             if all:
                 print(dict_to_table(cred_data))
+                
+                # Print the system time and the number of records retrieved
                 print(f"[{time.strftime("%H:%M:%S")}] {len(cred_data.keys())} records retrieved")
                 return None
             if conn_id in cred_data:
                 print(cred_data[conn_id])
             else:
                 print(f"conn_id: '{conn_id}' does not exist.")
+                
+    def generate_password(self,
+                        length=12,
+                        include_uppercase=True,
+                        include_lowercase=True,
+                        include_digits=True,
+                        include_symbols=True,
+                        exclude_chars=None,
+                        avoid_ambiguous=False):
+        """
+        Generate a random password with a length between 6 and 50 characters.
+        You can choose whether to include uppercase letters, lowercase letters, digits, and special symbols.
+        Additionally, you can specify a set of characters to exclude, and opt to avoid ambiguous characters ('l', 'I', '1', 'O', 'o', '0').
+        
+        Args:
+            length (int): The password length (must be between 6 and 50). Default is 12.
+            include_uppercase (bool): Whether to include uppercase letters (A-Z). Default is True.
+            include_lowercase (bool): Whether to include lowercase letters (a-z). Default is True.
+            include_digits (bool): Whether to include digits (0-9). Default is True.
+            include_symbols (bool): Whether to include special symbols. Default is True.
+            exclude_chars (iterable or None): A set or string of characters to exclude. Default is None.
+            avoid_ambiguous (bool): If True, excludes ambiguous characters (l, I, 1, O, o, 0). Default is False.
+        """
+        # 1. Validate the password length
+        if not 6 <= length <= 50:
+            print("Error input: Password length must be between 6 and 50.")
+            return None
+        
+        # 2. Build the initial character pool based on the selected options
+        char_pool = ""
+        if include_uppercase:
+            char_pool += string.ascii_uppercase  # Uppercase letters: A-Z
+        if include_lowercase:
+            char_pool += string.ascii_lowercase  # Lowercase letters: a-z
+        if include_digits:
+            char_pool += string.digits           # Digits: 0-9
+        if include_symbols:
+            char_pool += string.punctuation      # Special symbols: !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+        
+        # 3. Exclude ambiguous characters if requested
+        if avoid_ambiguous:
+            ambiguous_chars = "lI1Oo0"
+            char_pool = ''.join(c for c in char_pool if c not in ambiguous_chars)
+        
+        # 4. Exclude user-specified characters from the pool
+        if exclude_chars:
+            char_pool = ''.join(c for c in char_pool if c not in exclude_chars)
+        
+        # 5. Ensure that the character pool is not empty after exclusions
+        if not char_pool:
+            print("Error input: No available characters to generate a password. Check your settings.")
+            return None
+        
+        # 6. Generate the password by randomly selecting characters from the pool
+        password = ''.join(random.choice(char_pool) for _ in range(length))
+        print(password)
 
     def clean_cred_folder(self):
         """Delete the .dataxi folder."""

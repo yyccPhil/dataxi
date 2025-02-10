@@ -1,5 +1,6 @@
 import argparse
 from .cred_mgr import CredMgr
+from .cred_sender import CredSender
 
 
 def main():
@@ -34,6 +35,14 @@ def main():
     parser_gen.add_argument("-s", "--special", help="Exclude customized special characters")
     parser_gen.add_argument("-a", "--ambiguous", action="store_true", help="Exclude ambiguous characters")
     
+    # Subcommand to send the credential securely
+    parser_send = subparsers.add_parser("send", help="Send a credential securely")
+    send_group = parser_send.add_mutually_exclusive_group(required=True)
+    send_group.add_argument("-id", "--conn_id", help="Connection ID to send")
+    send_group.add_argument("-s", "--secret", help="Enter the secret text to send")
+    send_group.add_argument("-cfg", "--config", choices=['us', 'eu', 'default'], help="Specify the configuration to use")
+    parser_send.add_argument("-t", "--ttl", default=3600, help="Specify the time-to-live in seconds, default is 3600 seconds", type=int)
+    
     # Subcommand to clean the credential folder
     subparsers.add_parser("clean", help="Delete the credential folder")
 
@@ -60,6 +69,19 @@ def main():
                                     include_symbols=args.symbol,
                                     exclude_chars=args.special,
                                     avoid_ambiguous=args.ambiguous)
+    elif args.command == "send":
+        if args.config and args.ttl:
+            parser.error("The --ttl options are only available when sending a secret.")
+        cred_sender = CredSender()
+        if args.config:
+            if args.config in ("us", "default"):
+                cred_sender.set_region_config("us")
+            elif args.config == "eu":
+                cred_sender.set_region_config("eu")
+        elif args.conn_id:
+            cred_sender.send_cred(conn_id=args.conn_id, ttl=args.ttl)
+        else:
+            cred_sender.send_secret(secret=args.secret, ttl=args.ttl)
     elif args.command == "clean":
         confirm = input("Are you sure to clean the credential folder? (Warning: This action is irreversible!) (Y/n): ").strip().lower()
         if confirm != "y":

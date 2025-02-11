@@ -7,6 +7,9 @@ def main():
     # Create the top-level parser
     parser = argparse.ArgumentParser(description="Dataxi Credential Management CLI tool")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
+    
+    # Subcommand to get the credential storage path
+    subparsers.add_parser("path", help="Get the credential storage path")
 
     # Subcommand to add credentials
     parser_add = subparsers.add_parser("add", help="Add new credential interactively")
@@ -41,6 +44,7 @@ def main():
     send_group.add_argument("-id", "--conn_id", help="Connection ID to send")
     send_group.add_argument("-s", "--secret", help="Enter the secret text to send")
     send_group.add_argument("-cfg", "--config", choices=['us', 'eu', 'default'], help="Specify the configuration to use")
+    parser_send.add_argument("-p", "--passphrase", help="Optional passphrase to secure the secret")
     parser_send.add_argument("-t", "--ttl", default=3600, help="Specify the time-to-live in seconds, default is 3600 seconds", type=int)
     
     # Subcommand to clean the credential folder
@@ -53,7 +57,9 @@ def main():
     cred_mgr = CredMgr()
 
     # Call the corresponding method based on the subcommand
-    if args.command == "add":
+    if args.command == "path":
+        cred_mgr.get_cred_path()
+    elif args.command == "add":
         cred_mgr.add_cred(conn_id=args.conn_id)
     elif args.command in ("list", "ls"):
         cred_mgr.list_conn_id()
@@ -70,8 +76,8 @@ def main():
                                     exclude_chars=args.special,
                                     avoid_ambiguous=args.ambiguous)
     elif args.command == "send":
-        if args.config and args.ttl:
-            parser.error("The --ttl options are only available when sending a secret.")
+        if (args.config and args.ttl) or (args.config and args.passphrase):
+            parser.error("The --ttl and --passphrase options are only available when sending a secret.")
         cred_sender = CredSender()
         if args.config:
             if args.config in ("us", "default"):
@@ -79,9 +85,9 @@ def main():
             elif args.config == "eu":
                 cred_sender.set_region_config("eu")
         elif args.conn_id:
-            cred_sender.send_cred(conn_id=args.conn_id, ttl=args.ttl)
+            cred_sender.send_conn_id(conn_id=args.conn_id, passphrase=args.passphrase, ttl=args.ttl)
         else:
-            cred_sender.send_secret(secret=args.secret, ttl=args.ttl)
+            cred_sender.send_secret(secret=args.secret, passphrase=args.passphrase, ttl=args.ttl)
     elif args.command == "clean":
         confirm = input("Are you sure to clean the credential folder? (Warning: This action is irreversible!) (Y/n): ").strip().lower()
         if confirm != "y":

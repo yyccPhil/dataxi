@@ -72,6 +72,10 @@ class CredMgr:
         self.config_dir.mkdir(parents=True, exist_ok=True)
         if not self.cred_path.exists():
             self.cred_path.write_text("{}")
+    
+    def get_cred_path(self):
+        """Get the credential storage path."""
+        print(self.config_dir)
 
     def add_cred(self, conn_id: str):
         """Save the credential to the local file.
@@ -209,7 +213,7 @@ class CredMgr:
         """
         # 1. Validate the password length
         if not 6 <= length <= 50:
-            print("Error input: Password length must be between 6 and 50.")
+            print("cred_mgr: error: Password length must be between 6 and 50.")
             return None
         
         # 2. Build the initial character pool based on the selected options
@@ -234,7 +238,7 @@ class CredMgr:
         
         # 5. Ensure that the character pool is not empty after exclusions
         if not char_pool:
-            print("Error input: No available characters to generate a password. Check your settings.")
+            print("cred_mgr: error: No available characters to generate a password. Check your settings.")
             return None
         
         # 6. Generate the password by randomly selecting characters from the pool

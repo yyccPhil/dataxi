@@ -7,9 +7,6 @@ def main():
     # Create the top-level parser
     parser = argparse.ArgumentParser(description="Dataxi Credential Management CLI tool")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
-    
-    # Subcommand to get the credential storage path
-    subparsers.add_parser("path", help="Get the credential storage path")
 
     # Subcommand to add credentials
     parser_add = subparsers.add_parser("add", help="Add new credential interactively")
@@ -45,13 +42,16 @@ def main():
     send_group.add_argument("-s", "--secret", help="Enter the secret text to send")
     send_group.add_argument("-cfg", "--config", choices=['us', 'eu', 'default'], help="Specify the configuration to use")
     parser_send.add_argument("-p", "--passphrase", help="Optional passphrase to secure the secret")
-    parser_send.add_argument("-t", "--ttl", default=3600, help="Specify the time-to-live in seconds, default is 3600 seconds", type=int)
+    parser_send.add_argument("-t", "--ttl", help="Specify the time-to-live in seconds, default is 3600 seconds", type=int)
+    
+    # Subcommand to reset the credential storage file
+    subparsers.add_parser("reset", help="Reset the credential storage file")
     
     # Subcommand to clean the credential folder
     subparsers.add_parser("clean", help="Delete the credential folder")
-
-    # Subcommand to reset the credential storage file
-    subparsers.add_parser("reset", help="Reset the credential storage file")
+    
+    # Subcommand to get the credential storage path
+    subparsers.add_parser("path", help="Get the credential storage path")
 
     args = parser.parse_args()
     cred_mgr = CredMgr()

@@ -74,11 +74,13 @@ class CredSender:
             print(f"Secret URL: https://{region}.onetimesecret.com/secret/{result['secret_key']}")
 
     
-    def send_secret(self, secret, passphrase=None, ttl=3600):
+    def send_secret(self, secret, passphrase=None, ttl=None):
         """Send the secret text securely and return the secret URL."""
+        if ttl is None:
+            ttl = 3600
         self.generate_secret_url(secret, passphrase, ttl)
         
-    def send_conn_id(self, conn_id, passphrase=None, ttl=3600):
+    def send_conn_id(self, conn_id, passphrase=None, ttl=None):
         """Send the conn_id corresponding credential securely and return the secret URL."""
         # Initialize CredMgr to make sure the credential file exists
         CredMgr()
@@ -95,4 +97,7 @@ class CredSender:
 
         secret_text = "\n".join(f"{key}: {value}" for key, value in cred_dict.items())
         secret_text += f'''\n\nOriginal JSON:\n"{conn_id}": {json.dumps(cred_dict)}'''
+        
+        if ttl is None:
+            ttl = 3600
         self.generate_secret_url(secret_text, passphrase, ttl)

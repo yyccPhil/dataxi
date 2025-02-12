@@ -229,7 +229,7 @@ class CredMgr:
         
         # 3. Exclude ambiguous characters if requested
         if avoid_ambiguous:
-            ambiguous_chars = "lI1Oo0"
+            ambiguous_chars = "lI1O0"
             char_pool = ''.join(c for c in char_pool if c not in ambiguous_chars)
         
         # 4. Exclude user-specified characters from the pool

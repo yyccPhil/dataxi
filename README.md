@@ -127,7 +127,8 @@ Send credentials or a custom secret securely via Onetime Secret API, and return 
 - `--ttl` or `-t`: Time-to-live in seconds for the secret (default: 3600).
 
 > Note: Please enclose the values of `--secret`/`-s` and `--passphrase`/`-p` in **quotes** (like `-s '!@#$%^&*'`), especially if they contain special characters (such as `!`, `@`, `#`, `$`, `%`, `^`, `&`, and `*`).
-> Note: Special thanks to [Onetime Secret](https://onetimesecret.com/) for their awesome work and excellent API, which powers the secure sharing feature of this tool.
+
+> Special thanks to [Onetime Secret](https://onetimesecret.com/) for their awesome work and excellent API, which powers the secure sharing feature of this tool.
 
 </details>
 

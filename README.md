@@ -25,11 +25,9 @@ pip install dataxi
 
 #### Command Line
 
-Initialize to manage your credentials. This will create a hidden .dataxi folder in your $HOME directory to securely store credentials.
+The `creg_mgr` CLI allows secure creation, retrieval, and deletion of credentials through simple and user-friendly commands, while also providing a built-in password generator and a burn-after-reading secret-sending feature via the [Onetime Secret](https://docs.onetimesecret.com/docs/rest-api) API.
 
-```sh
-cred_mgr
-```
+> Note: When entering string parameters (like `--conn_id`/`-id` in cred_mgr) in the CLI, it is highly recommended to enclose the value in **quotes** (like `-id 'test@id#1'`), especially if it contains special characters (such as `!`, `@`, `#`, `$`, `%`, `^`, `&`, and `*`).
 
 <details>
 
@@ -85,6 +83,57 @@ cred_mgr load -id <conn_id>
 # Print all stored credentials
 cred_mgr load -a
 # cred_mgr load --all
+```
+
+<details>
+
+<summary>
+Generate a random password with customizable options.
+</summary>
+
+**Options**
+
+- `--length` or `-len`: Password length (default: 12, valid range: 6–50).
+- `--uppercase` or `-up`: Exclude uppercase letters.
+- `--lowercase` or `-low`: Exclude lowercase letters.
+- `--digit` or `-d`: Exclude digits.
+- `--symbol` or `-sym`: Exclude symbols.
+- `--special` or `-s`: Exclude user-specified special characters.
+- `--ambiguous` or `-a`: Exclude ambiguous characters (l, I, 1, O, 0).
+
+> Note: Please enclose the value of `--special`/`-s` in **quotes** (like `-s '!@#$%^&*'`), especially if it contains special characters (such as `!`, `@`, `#`, `$`, `%`, `^`, `&`, and `*`).
+
+</details>
+
+```sh
+cred_mgr gen [options]
+# e.g. cred_mgr gen -len 10 -s '!@#$%^&*' -a
+```
+
+<details>
+
+<summary>
+Send credentials or a custom secret securely via Onetime Secret API, and return a shareable, one-time viewable link.
+</summary>
+
+**Mutually Exclusive Options (choose one):**
+
+- `--conn_id` or `-id`: Send the credential corresponding to the specified connection ID stored by Dataxi.
+- `--secret` or `-s`: Directly send custom secret text.
+
+**Additional Options:**
+
+- `--passphrase` or `-p`: Optionally secure the secret with a passphrase.
+- `--ttl` or `-t`: Time-to-live in seconds for the secret (default: 3600).
+
+> Note: Please enclose the values of `--secret`/`-s` and `--passphrase`/`-p` in **quotes** (like `-s '!@#$%^&*'`), especially if they contain special characters (such as `!`, `@`, `#`, `$`, `%`, `^`, `&`, and `*`).
+> Note: Special thanks to [Onetime Secret](https://onetimesecret.com/) for their awesome work and excellent API, which powers the secure sharing feature of this tool.
+
+</details>
+
+```sh
+cred_mgr send [options]
+# e.g. cred_mgr send -s 'test' -p 'p_test'
 ```
 
 **(Warning: This action is irreversible!)** Use <code>reset</code> to clear all stored credentials in the .dataxi folder.

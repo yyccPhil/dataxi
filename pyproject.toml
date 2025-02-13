@@ -8,12 +8,19 @@ dynamic = ["version"]
 description = "Dataxi is a cross-DBMS server tool that can help you centralize the data extraction and transfer from different data sources."
 readme = "README.md"
 license = {text = "MIT License"}
-keywords = ["ETL"]
+keywords = ['ETL', 'database', 'credential']
 authors = [{name = "Yuan Yuan", email = "yyccphil@gmail.com"}]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent"
+    "Intended Audience :: Customer Service",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Topic :: Database :: Front-Ends",
+    "Topic :: Security"
 ]
 dependencies = []
 requires-python = ">=3.6"
@@ -26,6 +33,7 @@ cred_mgr = "dataxi.cred_mgr.cred_mgr_cli:main"
 
 [project.urls]
 "Project" = "https://github.com/yyccPhil/dataxi"
+Documentation = "https://github.com/yyccPhil/dataxi/wiki"
 
 [tool.setuptools.dynamic]
 version = {file = "VERSION"}

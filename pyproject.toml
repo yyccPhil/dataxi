@@ -25,11 +25,19 @@ classifiers = [
 dependencies = []
 requires-python = ">=3.6"
 
+[project.optional-dependencies]
+mysql = ["pymysql"]
+mssql = ["pymssql"]
+clickhouse = ["clickhouse_connect"]
+postgresql = ["psycopg2>=2.7"]
+splunk = ["requests"]
+
 [tool.setuptools.packages.find]
 include = ["dataxi*"]
 
 [project.scripts]
 cred_mgr = "dataxi.cred_mgr.cred_mgr_cli:main"
+dataxi = "dataxi.connectors.conn_cli:main"
 
 [project.urls]
 "Project" = "https://github.com/yyccPhil/dataxi"

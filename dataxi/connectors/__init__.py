@@ -1,2 +1,2 @@
 # __init__.py
-from dataxi.connectors.mysql_connector import MySQLConnector
+from .mysql_connector import MySQLConnector
